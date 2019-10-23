@@ -44,9 +44,12 @@
         document.getElementById("changeStream").addEventListener("click", function () {
             channelID = document.getElementById("channelID").value;
 
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+
             new Twitch.Embed("twitch-embed", {
-                width: 340,
-                height: 400,
+                width: w,
+                height: h,
                 layout: 'video',
                 channel: channelID
             });
