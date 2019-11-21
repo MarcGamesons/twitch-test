@@ -14,7 +14,7 @@ var xhttp = new XMLHttpRequest();
 var clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
 
 function getAccessToken() {
-    window.open('https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=http://localhost&response_type=token&scope=user_read')
+    window.open('https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=https://marcgamesons.github.io/twitch-test/auth&response_type=token&scope=user_read')
 }
 
 function getFollowedStreams() {
