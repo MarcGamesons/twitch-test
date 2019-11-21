@@ -1,61 +1,27 @@
 <html>
 
 <head>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        .flex-container {
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-        }
-
-        #channelID {
-            height: 10vw;
-            width: 100vw;
-            font-size: 8vw;
-        }
-
-        #changeStream {
-            height: 10vw;
-            width: 100vw;
-            font-size: 8vw;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 
 <body>
     <div class="flex-container">
         <div class="inputs">
-            <input type="text" id="channelID" />
-            <button id="changeStream">Change stream</button>
+            <button id="twitch-auth">Login with Twitch</button>
+            <button id="show-who-is-live">Show who is live</button>
+        </div>
+        <div>
+            <select id="live-streams">
+
+            </select>
         </div>
         <div id="twitch-embed"></div>
     </div>
 
     <script src="https://embed.twitch.tv/embed/v1.js"></script>
 
-    <script type="text/javascript">
-        var channelID;
-
-        document.getElementById("changeStream").addEventListener("click", function () {
-            channelID = document.getElementById("channelID").value;
-
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-
-            new Twitch.Embed("twitch-embed", {
-                width: w,
-                height: h,
-                layout: 'video',
-                channel: channelID
-            });
-        });
-
-    </script>
+    <script src="main.js" type="text/javascript"></script>
 </body>
 
 </html>

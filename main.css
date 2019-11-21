@@ -1,0 +1,38 @@
+@media only screen and (max-width: 768px) {
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 15%;
+    }
+
+    #channelID {
+        height: 50%;
+        width: 100%;
+        font-size: 100%;
+    }
+
+    #changeStream {
+        height: 50%;
+        width: 100%;
+        font-size: 100%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}
