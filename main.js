@@ -1,60 +1,55 @@
-document.getElementById("twitch-auth").addEventListener("click",
-    function () {
-        getAccessToken();
-    }
-);
+const clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
 
-document.getElementById("show-who-is-live").addEventListener("click",
-    function () {
-        getFollowedStreams();
-    }
-);
-
-var xhttp = new XMLHttpRequest();
-var clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
+document.querySelector("#twitch-auth").addEventListener("click", () => getAccessToken());
+document.querySelector("#show-who-is-live").addEventListener("click", () => getFollowedStreams());
 
 function getAccessToken() {
-
-    var liveUrl = "https://marcgamesons.github.io/twitch-test/auth";
-    var debugUrl = "http://localhost/auth.html";
-
-    window.open('https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + liveUrl + '&response_type=token&scope=user_read')
+    const url = "https://marcgamesons.github.io/twitch-test/auth";
+    const authUrl = 'https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + url + '&response_type=token&scope=user_read';
+    window.open(authUrl);
 }
 
-function getFollowedStreams() {
-    xhttp.open("GET", 'https://api.twitch.tv/kraken/streams/followed?limit=100');
-    xhttp.setRequestHeader("Accept", "application/vnd.twitchtv.v5+json");
-    xhttp.setRequestHeader("Client-ID", clientId);
-    xhttp.setRequestHeader("Authorization", 'OAuth ' + localStorage.getItem("accesstoken"));
-    xhttp.send();
+async function getFollowedStreams() {
+    const url = 'https://api.twitch.tv/kraken/streams/followed?limit=100';
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var data = JSON.parse(this.responseText);
-
-            var select = document.getElementById("live-streams");
-
-            for (var i = 0; i < data.streams.length; i++) {
-
-                var option = document.createElement("option");
-                option.text = data.streams[i].channel.display_name;
-                option.value = data.streams[i].channel.name;
-                select.appendChild(option);
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/vnd.twitchtv.v5+json',
+                'Client-ID': clientId,
+                'Authorization': 'OAuth ' + localStorage.getItem('accesstoken')
             }
+        });
 
-            select.addEventListener('change', function () { createEmbed(this.value); });
-            select.style.display = "block";
-        }
-    };
+        const json = await response.json();
+        addListElements(json);
+    } catch (error) {
+        console.error('Error: ' + error);
+    }
+}
+
+function addListElements(data) {
+    const select = document.querySelector("#live-streams");
+
+    for (let i = 0; i < data.streams.length; i++) {
+
+        const option = document.createElement("option");
+        option.text = data.streams[i].channel.display_name;
+        option.value = data.streams[i].channel.name;
+        select.appendChild(option);
+    }
+
+    select.addEventListener('change', () => createEmbed(this.value));
+    select.style.display = "block";
 }
 
 function createEmbed(channelName) {
-
-    var element = document.getElementById("twitch-embed");
-    var parent = element.parentNode;
+    const element = document.querySelector("#twitch-embed");
+    const parent = element.parentNode;
     parent.removeChild(element);
 
-    var div = document.createElement("div");
+    const div = document.createElement("div");
     div.id = "twitch-embed";
     parent.appendChild(div);
 
