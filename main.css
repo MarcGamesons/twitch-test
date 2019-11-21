@@ -41,6 +41,59 @@
         border-radius: 0px;
         border-bottom: 1.5px solid #6441A4;
     }
+
+    #options-container {
+        color: #6441A4;
+        border-bottom: 2px solid #6441A4;
+        width: 98%;
+        display: none;
+    }
+
+    #options-container-header {
+        margin: 5px;
+    }
+
+    i {
+        border: solid #6441A4;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 2px;
+        margin-top: 5px;
+    }
+
+    .down {
+        float: right;
+        transform: rotate(45deg);
+    }
+
+    #options-container {
+        margin-bottom: 4px;
+    }
+
+    #options-list {
+        display: none;
+        list-style: none;
+    }
+
+    .options-list-element {
+        margin: 5px;
+        background: rgba(100, 65, 164, 0.2);
+        border-radius: 3px;
+        padding: 3px;
+    }
+
+    .streamer {
+        margin-bottom: 8px;
+    }
+
+    .stream-title {
+        margin-bottom: 8px;
+        font-size: 0.75em;
+    }
+
+    .game {
+        color:rgba(100, 65, 164, 0.75);
+    }
 }
 
 @media only screen and (min-width: 768px) {

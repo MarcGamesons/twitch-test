@@ -2,6 +2,7 @@ const clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
 
 document.querySelector("#twitch-auth").addEventListener("click", () => getAccessToken());
 document.querySelector("#show-who-is-live").addEventListener("click", () => getFollowedStreams());
+document.querySelector("#options-container-header").addEventListener("click", () => toggleDropDown());
 
 function getAccessToken() {
     const url = "https://marcgamesons.github.io/twitch-test/auth";
@@ -30,18 +31,38 @@ async function getFollowedStreams() {
 }
 
 function addListElements(data) {
-    const select = document.querySelector("#live-streams");
+    document.querySelector("#options-container").style.display = "block";
+
+    const ul = document.querySelector("#options-list");
 
     for (let i = 0; i < data.streams.length; i++) {
 
-        const option = document.createElement("option");
-        option.text = data.streams[i].channel.display_name;
-        option.value = data.streams[i].channel.name;
-        select.appendChild(option);
+        const li = document.createElement("li");
+        li.classList = "options-list-element";
+
+        ul.appendChild(li);
+
+        const divTitle = document.createElement("div");
+        divTitle.classList = "stream-title";
+        divTitle.innerHTML = data.streams[i].channel.status;
+
+        const divGame = document.createElement("div");
+        divGame.classList = "game";
+        divGame.innerHTML = data.streams[i].channel.game;
+
+        const divStreamer = document.createElement("div");
+        divStreamer.classList = "streamer";
+        divStreamer.innerHTML = data.streams[i].channel.display_name;
+
+        li.appendChild(divStreamer);
+        li.appendChild(divTitle);
+        li.appendChild(divGame);
+
+        li.addEventListener("click", () => toggleDropDown());
+        li.addEventListener("click", () => createEmbed(data.streams[i].channel.name));
     }
 
-    select.addEventListener('change', function () { createEmbed(this.value) });
-    select.style.display = "block";
+    ul.style.display = "none";
 }
 
 function createEmbed(channelName) {
@@ -60,4 +81,17 @@ function createEmbed(channelName) {
         layout: "video",
         autoplay: false
     });
+}
+
+function toggleDropDown() {
+    const dropDown = document.querySelector("#options-list");
+    dropDown.style.display == "block" ? dropDown.style.display = "none" : dropDown.style.display = "block";
+}
+
+function dropDown() {
+    document.querySelector("#options-list").style.display = "block";
+}
+
+function selected() {
+    document.querySelector("#options-list").style.display = "none";
 }
