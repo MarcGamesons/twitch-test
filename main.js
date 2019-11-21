@@ -40,7 +40,7 @@ function addListElements(data) {
         select.appendChild(option);
     }
 
-    select.addEventListener('change', () => createEmbed(this.value));
+    select.addEventListener('change', function () { createEmbed(this.value) });
     select.style.display = "block";
 }
 
