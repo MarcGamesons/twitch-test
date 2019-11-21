@@ -7,13 +7,11 @@
 
 <body>
     <div class="flex-container">
-        <div class="inputs">
-            <button id="twitch-auth">Login with Twitch</button>
-            <button id="show-who-is-live">Show who is live</button>
-        </div>
         <div>
-            <select id="live-streams">
-
+            <button id="twitch-auth" class="mobile-view material-button">Get Twitch token</button>
+            <button id="show-who-is-live" class="mobile-view material-button">Show followed streams</button>
+            <select id="live-streams" class="mobile-view material-button .material-drop-down">
+                <option>Select a stream...</option>
             </select>
         </div>
         <div id="twitch-embed"></div>

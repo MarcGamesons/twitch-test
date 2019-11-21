@@ -14,11 +14,15 @@ var xhttp = new XMLHttpRequest();
 var clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
 
 function getAccessToken() {
-    window.open('https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=https://marcgamesons.github.io/twitch-test/auth&response_type=token&scope=user_read')
+
+    var liveUrl = "https://marcgamesons.github.io/twitch-test/auth";
+    var debugUrl = "http://localhost/auth.html";
+
+    window.open('https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + liveUrl + '&response_type=token&scope=user_read')
 }
 
 function getFollowedStreams() {
-    xhttp.open("GET", 'https://api.twitch.tv/kraken/streams/followed');
+    xhttp.open("GET", 'https://api.twitch.tv/kraken/streams/followed?limit=100');
     xhttp.setRequestHeader("Accept", "application/vnd.twitchtv.v5+json");
     xhttp.setRequestHeader("Client-ID", clientId);
     xhttp.setRequestHeader("Authorization", 'OAuth ' + localStorage.getItem("accesstoken"));
@@ -27,9 +31,9 @@ function getFollowedStreams() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var data = JSON.parse(this.responseText);
-            console.log(data);
 
             var select = document.getElementById("live-streams");
+
             for (var i = 0; i < data.streams.length; i++) {
 
                 var option = document.createElement("option");
@@ -39,6 +43,7 @@ function getFollowedStreams() {
             }
 
             select.addEventListener('change', function () { createEmbed(this.value); });
+            select.style.display = "block";
         }
     };
 }
