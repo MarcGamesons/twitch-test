@@ -50,7 +50,7 @@
     }
 
     #options-container-header {
-        margin: 5px;
+        margin: 10px;
     }
 
     i {
@@ -79,7 +79,16 @@
         margin: 5px;
         background: rgba(100, 65, 164, 0.2);
         border-radius: 3px;
-        padding: 3px;
+        padding: 6px;
+    }
+
+    .video-preview-container {
+        float: left;
+    }
+
+    .video-preview {
+        box-shadow: 0 0 3px 2px #6441A4;
+        margin: 10px 10px 0 5px;
     }
 
     .streamer {
@@ -89,10 +98,14 @@
     .stream-title {
         margin-bottom: 8px;
         font-size: 0.75em;
+        max-height: 15px;
+        overflow: hidden;
     }
 
     .game {
         color:rgba(100, 65, 164, 0.75);
+        max-height: 15px;
+        overflow: hidden;
     }
 }
 

@@ -42,6 +42,14 @@ function addListElements(data) {
 
         ul.appendChild(li);
 
+        const imgPreview = document.createElement("img");
+        imgPreview.classList = "video-preview";
+        imgPreview.src = data.streams[i].preview.small;
+
+        const divPreviewContainer = document.createElement("div");
+        divPreviewContainer.classList = "video-preview-container";
+        divPreviewContainer.appendChild(imgPreview);
+
         const divTitle = document.createElement("div");
         divTitle.classList = "stream-title";
         divTitle.innerHTML = data.streams[i].channel.status;
@@ -54,6 +62,7 @@ function addListElements(data) {
         divStreamer.classList = "streamer";
         divStreamer.innerHTML = data.streams[i].channel.display_name;
 
+        li.appendChild(divPreviewContainer);
         li.appendChild(divStreamer);
         li.appendChild(divTitle);
         li.appendChild(divGame);
@@ -74,13 +83,13 @@ function createEmbed(channelName) {
     div.id = "twitch-embed";
     parent.appendChild(div);
 
-    new Twitch.Embed("twitch-embed", {
-        width: window.innerWidth,
+    var options = {
+        width: "98%",
         height: 480,
         channel: channelName,
-        layout: "video",
-        autoplay: false
-    });
+    };
+
+    player = new Twitch.Player("twitch-embed", options);
 }
 
 function toggleDropDown() {
