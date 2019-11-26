@@ -8,17 +8,18 @@
 <body>
     <div class="flex-container">
         <div>
-            <button id="twitch-auth" class="mobile-view material-button">Get Twitch token</button>
             <button id="show-who-is-live" class="mobile-view material-button">Show followed streams</button>
             <div id="options-container">
                 <div id="options-container-header">
                     Select a stream...<i class="arrow down"></i>
+                    <!--Show chat <input type="checkbox" id="show-chat">-->
                 </div>
                 <ul id="options-list">
                 </ul>
             </div>
         </div>
-        <div id="twitch-embed"></div>
+        <div id="twitch-player-embed"></div>
+        <!--<div id="twitch-chat-embed"></div>-->
     </div>
 
     <script src="https://player.twitch.tv/js/embed/v1.js"></script>

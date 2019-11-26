@@ -1,32 +1,59 @@
 const clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
 
-document.querySelector("#twitch-auth").addEventListener("click", () => getAccessToken());
+/*document.querySelector('#show-chat').checked = localStorage.getItem('showChat');
+document.querySelector('#show-chat').addEventListener('change', function () {
+    if (this.checked) {
+        localStorage.setItem('showChat', true);
+    }
+    else {
+        localStorage.setItem('showChat', false);
+        removeChatEmbed();
+    }
+
+    console.log(localStorage.showChat);
+});*/
+
 document.querySelector("#show-who-is-live").addEventListener("click", () => getFollowedStreams());
 document.querySelector("#options-container-header").addEventListener("click", () => toggleDropDown());
 
 function getAccessToken() {
-    const url = "https://marcgamesons.github.io/twitch-test/auth";
-    const authUrl = 'https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + url + '&response_type=token&scope=user_read';
-    window.open(authUrl);
+    try {
+        const url = "https://marcgamesons.github.io/twitch-test/auth";
+        const authUrl = 'https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + url + '&response_type=token&scope=user_read';
+        window.open(authUrl);
+    }
+    catch (error) {
+        console.error('Could not retrieve access token! :: ' + error);
+    }
 }
 
-async function getFollowedStreams() {
-    const url = 'https://api.twitch.tv/kraken/streams/followed?limit=100';
+function getFollowedStreams() {
+    if (!localStorage.getItem('accesstoken')) {
+        getAccessToken();
+    }
+    else {
+        const url = 'https://api.twitch.tv/kraken/streams/followed?limit=100';
 
-    try {
-        const response = await fetch(url, {
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/vnd.twitchtv.v5+json',
                 'Client-ID': clientId,
                 'Authorization': 'OAuth ' + localStorage.getItem('accesstoken')
             }
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            else {
+                getAccessToken();
+                throw new Error('Access token was wrong! Trying to get a new one...');
+            }
+        }).then((responseJson) => {
+            addListElements(responseJson);
+        }).catch((error) => {
+            console.error('Could not fetch data! :: ' + error);
         });
-
-        const json = await response.json();
-        addListElements(json);
-    } catch (error) {
-        console.error('Error: ' + error);
     }
 }
 
@@ -34,6 +61,9 @@ function addListElements(data) {
     document.querySelector("#options-container").style.display = "block";
 
     const ul = document.querySelector("#options-list");
+    while (ul.firstChild) {
+        ul.firstChild.remove();
+    }
 
     for (let i = 0; i < data.streams.length; i++) {
 
@@ -68,39 +98,63 @@ function addListElements(data) {
         li.appendChild(divGame);
 
         li.addEventListener("click", () => toggleDropDown());
-        li.addEventListener("click", () => createEmbed(data.streams[i].channel.name));
+        li.addEventListener("click", () => createPlayerEmbed(data.streams[i].channel.name));
     }
 
     ul.style.display = "none";
 }
 
-function createEmbed(channelName) {
-    const element = document.querySelector("#twitch-embed");
+function createEmbeds(channelName) {
+    createPlayerEmbed(channelName);
+
+    if (localStorage.showChat == true) {
+        createChatEmbed(channelName);
+    }
+}
+let player;
+function createPlayerEmbed(channelName) {
+    const element = document.querySelector("#twitch-player-embed");
     const parent = element.parentNode;
     parent.removeChild(element);
 
     const div = document.createElement("div");
-    div.id = "twitch-embed";
+    div.id = "twitch-player-embed";
     parent.appendChild(div);
 
-    var options = {
+    const options = {
         width: "98%",
         height: 480,
         channel: channelName,
     };
 
-    player = new Twitch.Player("twitch-embed", options);
+    player = new Twitch.Player("twitch-player-embed", options);
+    player.addEventListener(Twitch.Player.READY, changeQuality);
+}
+
+function changeQuality() {
+    player.removeEventListener(Twitch.Player.READY, changeQuality);
+    player.setQuality('160p30');
+}
+
+function createChatEmbed(channelName) {
+    document.querySelector("#chat_embed").remove();
+    const divChat = document.querySelector("#twitch-chat-embed");
+
+    const iframeChat = document.createElement('iframe');
+    iframeChat.scrolling = "yes";
+    iframeChat.id = "chat_embed";
+    iframeChat.src = "https://twitch.tv/embed/" + channelName + "/chat";
+    iframeChat.height = "480";
+    iframeChat.width = "98%";
+
+    divChat.appendChild(iframeChat);
+}
+
+function removeChatEmbed() {
+    document.querySelector("#chat_embed").remove();
 }
 
 function toggleDropDown() {
     const dropDown = document.querySelector("#options-list");
     dropDown.style.display == "block" ? dropDown.style.display = "none" : dropDown.style.display = "block";
-}
-
-function dropDown() {
-    document.querySelector("#options-list").style.display = "block";
-}
-
-function selected() {
-    document.querySelector("#options-list").style.display = "none";
 }
