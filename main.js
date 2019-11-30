@@ -18,7 +18,15 @@ document.querySelector("#options-container-header").addEventListener("click", ()
 
 function getAccessToken() {
     try {
-        const url = "https://marcgamesons.github.io/twitch-test/auth";
+
+        const indev = true;
+
+        if (indev) {
+            const url = "http://localhost/twitch/auth.html";
+        } else {
+            const url = "https://marcgamesons.github.io/twitch-test/auth";
+        }
+
         const authUrl = 'https://id.twitch.tv/oauth2/authorize?client_id=' + clientId + '&redirect_uri=' + url + '&response_type=token&scope=user_read';
         window.open(authUrl);
     }
@@ -134,6 +142,7 @@ function createPlayerEmbed(channelName) {
 function changeQuality() {
     player.removeEventListener(Twitch.Player.READY, changeQuality);
     player.setQuality('160p30');
+    player.pause();
 }
 
 function createChatEmbed(channelName) {
