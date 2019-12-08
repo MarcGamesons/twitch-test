@@ -3,7 +3,7 @@ let player;
 
 document.addEventListener('DOMContentLoaded', function () {
     let params = (new URL(document.location)).searchParams;
-    let channel_name = params.get('channel_name');
+    let channel_name = params.get('c');
 
     if (channel_name != null) {
         createPlayerEmbed(channel_name);
