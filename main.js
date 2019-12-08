@@ -1,13 +1,4 @@
-<<<<<<< Updated upstream
 const clientId = "r96qlq1s8z8pmuu7jsgtte31bk1d3b";
-=======
-const clientId = 'r96qlq1s8z8pmuu7jsgtte31bk1d3b';
-let player;
-
-document.addEventListener('DOMContentLoaded', function () {
-    let params = (new URL(document.location)).searchParams;
-    let channel_name = params.get('c');
->>>>>>> Stashed changes
 
 /*document.querySelector('#show-chat').checked = localStorage.getItem('showChat');
 document.querySelector('#show-chat').addEventListener('change', function () {
